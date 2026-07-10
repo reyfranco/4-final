@@ -3,182 +3,148 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Polla Mundialista USA/MEX/CAN 2026</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<title>Polla 2026 — Solo Campeón</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: 'Segoe UI', Tahoma, sans-serif;
     background: #004587;
     min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 20px;
-    color: #222;
   }
-  .container {
-    max-width: 1100px;
-    margin: 0 auto;
+  .card {
     background: #fff;
     border-radius: 12px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.35);
     overflow: hidden;
+    width: 100%;
+    max-width: 480px;
   }
   header {
     background: #004587;
     color: #fff;
     text-align: center;
-    padding: 30px 20px;
+    padding: 28px 20px 20px;
   }
-  header h1 {
-    font-size: 2em;
-    letter-spacing: 1px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-  }
-  header p { margin-top: 8px; opacity: 0.9; }
+  header h1 { font-size: 1.45em; letter-spacing: 0.5px; }
+  header p  { margin-top: 6px; opacity: 0.88; font-size: 0.92em; }
 
-  .progress-bar { background: #eee; height: 8px; width: 100%; }
-  .progress-fill { background: #0066c9; height: 100%; width: 0%; transition: width 0.3s; }
-
-  .section {
-    padding: 25px 30px;
-    border-bottom: 1px solid #eee;
-  }
-  .section h2 {
-    color: #004587;
-    margin-bottom: 15px;
-    padding-bottom: 8px;
-    border-bottom: 3px solid #004587;
-    font-size: 1.3em;
-  }
-  .section p.hint { color:#666; font-size:0.9em; margin-bottom:15px; }
-
-  .input-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 15px;
-    margin-bottom: 10px;
-  }
-  .input-group label {
+  .body { padding: 28px 30px; }
+  .field { margin-bottom: 18px; }
+  .field label {
     display: block;
     font-weight: 600;
     margin-bottom: 5px;
-    color: #444;
+    color: #333;
     font-size: 0.9em;
   }
-  .input-group input, .input-group select {
+  .field input, .field select {
     width: 100%;
-    padding: 10px;
+    padding: 11px 12px;
     border: 1px solid #ccc;
     border-radius: 6px;
     font-size: 1em;
+    transition: border-color 0.2s, box-shadow 0.2s;
   }
-  .input-group input:focus, .input-group select:focus {
+  .field input:focus, .field select:focus {
     outline: none;
     border-color: #004587;
-    box-shadow: 0 0 0 2px rgba(0,69,135,0.2);
+    box-shadow: 0 0 0 2px rgba(0,69,135,0.18);
+  }
+  .field input.error, .field select.error {
+    border-color: #c9302c !important;
+    background: #fff5f5 !important;
   }
 
-  /* Bracket rounds */
-  .round-card {
-    background: #f9f9f6;
-    border-radius: 8px;
-    overflow: hidden;
-    margin-bottom: 20px;
-    border: 1px solid #e0e0d8;
-  }
-  .round-header {
-    background: #004587;
-    color: #fff;
-    padding: 10px 15px;
-    font-weight: bold;
-    font-size: 1.1em;
-    letter-spacing: 1px;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.92em;
-  }
-  table th {
-    background: #004587;
-    color: #fff;
-    padding: 8px;
-    text-align: center;
-    font-weight: 600;
-  }
-  table td {
-    padding: 8px;
-    text-align: center;
-    border-bottom: 1px solid #eee;
-    background: #fff;
-  }
-  table tr:last-child td { border-bottom: none; }
-  .match-num { font-weight:bold; color:#004587; }
-  .team-input {
-    width: 95%;
-    padding: 6px 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 0.95em;
-  }
-  .vs { color:#004587; font-weight:bold; padding:0 6px; }
-
-  .champion-box {
+  .champion-wrap {
     background: linear-gradient(135deg, #ffd700, #ffb300);
-    padding: 20px;
     border-radius: 8px;
+    padding: 18px 20px;
+    margin-bottom: 22px;
     text-align: center;
-    margin-top: 15px;
   }
-  .champion-box label {
-    display:block;
-    font-size:1.1em;
-    color:#5a3d00;
-    font-weight:bold;
-    margin-bottom:8px;
+  .champion-wrap label {
+    display: block;
+    font-size: 1.05em;
+    color: #5a3d00;
+    font-weight: 700;
+    margin-bottom: 10px;
   }
-  .champion-box input, .champion-box select {
-    width: 80%;
+  .champion-wrap select {
+    width: 100%;
     padding: 12px;
     border: 2px solid #b8860b;
     border-radius: 6px;
-    font-size: 1.1em;
-    text-align: center;
-    text-align-last: center;
-    font-weight: bold;
+    font-size: 1.05em;
+    font-weight: 600;
     background: #fff;
     cursor: pointer;
+    text-align: center;
+    text-align-last: center;
+  }
+  .champion-wrap select.error {
+    border-color: #c9302c !important;
+    background: #fff5f5 !important;
   }
 
-  .special-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 15px;
+  .divider {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 6px 0 20px;
+  }
+  .section-title {
+    color: #004587;
+    font-size: 0.82em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 14px;
   }
 
-  .btn-bar {
-    padding: 25px 30px;
-    background: #f5f5f0;
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  button {
-    padding: 12px 28px;
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 13px;
     border: none;
     border-radius: 6px;
-    font-size: 1em;
-    font-weight: 600;
+    font-size: 1.05em;
+    font-weight: 700;
     cursor: pointer;
     transition: transform 0.15s, box-shadow 0.15s;
   }
-  button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-  .btn-primary { background: #004587; color: #fff; }
-  .btn-secondary { background: #0066c9; color: #fff; }
-  .btn-ghost { background: #fff; color: #444; border: 1px solid #ccc; }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,0.2); }
   .btn-send { background: #c9302c; color: #fff; }
+  .btn-send:disabled { background: #aaa; cursor: not-allowed; transform: none; box-shadow: none; }
 
-  .summary-modal {
+  .error-msg {
+    background: #fff5f5;
+    border-left: 4px solid #c9302c;
+    padding: 10px 14px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    font-size: 0.9em;
+    color: #7a1c19;
+    display: none;
+  }
+  .warning-box {
+    background: #fff8e1;
+    border-left: 4px solid #f0a500;
+    color: #7a5200;
+    padding: 11px 14px;
+    border-radius: 6px;
+    font-size: 0.88em;
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+
+  .error-msg ul { margin-left: 16px; margin-top: 4px; }
+  .error-msg li { padding: 2px 0; }
+
+  /* Modales */
+  .modal {
     display: none;
     position: fixed;
     inset: 0;
@@ -188,19 +154,31 @@
     justify-content: center;
     padding: 20px;
   }
-  .summary-modal.active { display: flex; }
-  .summary-content {
+  .modal.active { display: flex; }
+  .modal-box {
     background: #fff;
     border-radius: 12px;
-    max-width: 700px;
+    max-width: 420px;
     width: 100%;
-    max-height: 85vh;
-    overflow-y: auto;
-    padding: 25px;
+    padding: 28px 26px;
+    text-align: center;
   }
-  .summary-content h2 { color: #004587; margin-bottom: 15px; }
-  .summary-content h3 { color: #004587; margin-top: 15px; margin-bottom: 8px; }
-  .summary-item { padding: 6px 0; border-bottom: 1px dashed #eee; font-size: 0.95em; }
+  .modal-icon { font-size: 3.5em; margin-bottom: 10px; }
+  .modal-box h2 { color: #004587; margin-bottom: 10px; }
+  .modal-box p  { color: #555; margin-bottom: 18px; font-size: 0.97em; }
+  .modal-actions { display: flex; gap: 10px; justify-content: center; }
+  .btn-sm {
+    padding: 10px 22px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.97em;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .btn-sm:hover { opacity: 0.88; }
+  .btn-cancel { background: #eee; color: #444; }
+  .btn-confirm { background: #c9302c; color: #fff; }
+  .btn-ok { background: #004587; color: #fff; }
 
   .toast {
     position: fixed;
@@ -214,490 +192,203 @@
     transform: translateX(400px);
     transition: transform 0.3s;
     z-index: 200;
+    font-size: 0.95em;
   }
   .toast.show { transform: translateX(0); }
 
-  .team-input.error, input.error {
-    border-color: #c9302c !important;
-    background: #fff5f5 !important;
-    box-shadow: 0 0 0 2px rgba(201,48,44,0.15);
-  }
-  .error-list {
-    background: #fff5f5;
-    border-left: 4px solid #c9302c;
-    padding: 12px 15px;
-    margin: 15px 0;
-    border-radius: 4px;
-    text-align: left;
-    max-height: 200px;
-    overflow-y: auto;
-  }
-  .error-list ul { margin-left: 20px; margin-top: 6px; }
-  .error-list li { font-size: 0.9em; color:#7a1c19; padding: 2px 0; }
-
-  @media (max-width: 600px) {
-    .section { padding: 18px 15px; }
-    header h1 { font-size: 1.4em; }
-    table { font-size: 0.8em; }
-    .team-input { width: 100%; font-size: 0.85em; }
+  @media (max-width: 500px) {
+    .body { padding: 22px 18px; }
   }
 </style>
 </head>
 <body>
-<div class="container">
+
+<div class="card">
   <header>
-    <img src="https://drive.google.com/uc?export=view&id=1Jl7MKI_Cqmyt1FsOTQX8brEb6aZdp-Un" alt="Logo" style="height:90px;margin-bottom:12px;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.3));" onerror="this.style.display='none'">
     <h1>⚽ XXIII Mundial USA/MEX/CAN 2026</h1>
-    <p>Polla Mundialista — Fase Eliminatoria</p>
+    <p>Polla Mundialista — Solo Campeón del Mundo</p>
   </header>
-  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
 
+  <div class="body">
 
-  <div class="section">
-    <h2>👤 Datos del participante</h2>
-    <div class="input-row">
-      <div class="input-group">
-        <label>Nombre completo *</label>
-        <input type="text" id="nombre" placeholder="Tu nombre">
-      </div>
-      <div class="input-group">
-        <label>Email / Equipo</label>
-        <input type="text" id="email" placeholder="correo@ejemplo.com">
-      </div>
-      <div class="input-group">
-        <label>Apodo (ranking)</label>
-        <input type="text" id="apodo" placeholder="El Profe">
-      </div>
+    <div class="warning-box">
+      ⚠️ <strong>Importante:</strong> El campeón que elijas <strong>debe ser uno de los dos equipos</strong> que indicaste en el formulario anterior como finalistas. Si seleccionas un equipo diferente, tu predicción de campeón no coincidirá con tu final.
     </div>
-  </div>
 
-  <div class="section">
-    <h2>🥊 Cuartos de Final</h2>
-    <p class="hint">Selecciona los equipos clasificados y elige el ganador de cada partido.</p>
-    <div id="cuartos"></div>
-  </div>
+    <p class="section-title">👤 Tus datos</p>
+    <div class="field">
+      <label>Nombre completo *</label>
+      <input type="text" id="nombre" placeholder="Tu nombre completo" autocomplete="name">
+    </div>
+    <div class="field">
+      <label>Email / Equipo</label>
+      <input type="text" id="email" placeholder="correo@ejemplo.com" autocomplete="email">
+    </div>
+    <div class="field">
+      <label>Apodo (ranking)</label>
+      <input type="text" id="apodo" placeholder="El Profe">
+    </div>
 
-  <div class="section">
-    <h2>🔥 Semifinales</h2>
-    <p class="hint">Elige el ganador de cada semifinal.</p>
-    <div id="semis"></div>
-  </div>
+    <hr class="divider">
+    <p class="section-title">👑 Predicción</p>
 
-  <div class="section">
-    <h2>🏆 Gran Final</h2>
-    <p class="hint">Los dos finalistas y el campeón del mundo.</p>
-    <div id="final"></div>
-    <div class="champion-box">
+    <div class="champion-wrap">
       <label>👑 CAMPEÓN DEL MUNDO 2026</label>
-      <select id="campeonMundo"><option value="">-- Seleccionar campeón --</option></select>
+      <select id="campeonMundo">
+        <option value="">-- Seleccionar campeón --</option>
+        <option value="Francia">Francia</option>
+        <option value="España">España</option>
+        <option value="Bélgica">Bélgica</option>
+        <option value="Noruega">Noruega</option>
+        <option value="Inglaterra">Inglaterra</option>
+        <option value="Argentina">Argentina</option>
+        <option value="Suiza">Suiza</option>
+      </select>
     </div>
-  </div>
 
-  <div class="btn-bar">
-    <button class="btn-ghost" onclick="resetForm()">🔄 Limpiar</button>
-    <button class="btn-secondary" onclick="saveLocal()">💾 Guardar</button>
-    <button class="btn-primary" onclick="showSummary()">📋 Ver resumen</button>
-    <button class="btn-send" onclick="submitPolla()">📤 Enviar polla</button>
-  </div>
-</div>
-
-<!-- Modal resumen -->
-<div class="summary-modal" id="summaryModal">
-  <div class="summary-content">
-    <h2>📋 Resumen de tu polla</h2>
-    <div id="summaryBody"></div>
-    <div style="margin-top:20px; display:flex; gap:10px; justify-content:flex-end;">
-      <button class="btn-ghost" onclick="closeSummary()">Editar</button>
-      <button class="btn-primary" onclick="exportSummary()">📊 Exportar a Excel</button>
+    <div class="error-msg" id="errorMsg">
+      <strong>⚠️ Faltan campos:</strong>
+      <ul id="errorList"></ul>
     </div>
+
+    <button class="btn btn-send" id="btnSend" onclick="submitForm()">📤 Enviar campeón</button>
   </div>
 </div>
 
 <!-- Modal confirmación -->
-<div class="summary-modal" id="confirmModal">
-  <div class="summary-content" style="max-width:450px;text-align:center;">
-    <div style="font-size:4em;margin-bottom:10px;">⚽</div>
-    <h2 style="text-align:center;">¿Confirmas tu envío?</h2>
-    <p style="margin:15px 0;color:#555;">Una vez enviada, tu polla quedará registrada. Revisa que todas tus predicciones sean correctas.</p>
-    <div style="display:flex;gap:10px;justify-content:center;margin-top:20px;">
-      <button class="btn-ghost" onclick="closeConfirm()">Cancelar</button>
-      <button class="btn-send" onclick="doSubmit()">📤 Sí, enviar</button>
+<div class="modal" id="confirmModal">
+  <div class="modal-box">
+    <div class="modal-icon">⚽</div>
+    <h2>¿Confirmas tu envío?</h2>
+    <p>Revisa que tu campeón sea correcto antes de confirmar.</p>
+    <div id="confirmDetail" style="background:#f0f7ff;padding:10px;border-radius:8px;margin-bottom:16px;color:#004587;font-weight:600;font-size:0.97em;"></div>
+    <div class="modal-actions">
+      <button class="btn-sm btn-cancel" onclick="closeConfirm()">Cancelar</button>
+      <button class="btn-sm btn-confirm" onclick="doSubmit()">📤 Sí, enviar</button>
     </div>
   </div>
 </div>
 
 <!-- Modal éxito -->
-<div class="summary-modal" id="successModal">
-  <div class="summary-content" style="max-width:450px;text-align:center;">
-    <div style="font-size:4em;margin-bottom:10px;">🏆</div>
-    <h2 style="text-align:center;color:#004587;">¡Polla enviada!</h2>
-    <p style="margin:15px 0;color:#555;font-size:1.05em;">Tu polla fue registrada exitosamente. ¡Mucha suerte en el Mundial!</p>
-    <div id="successName" style="background:#f0f7ff;padding:12px;border-radius:8px;margin:15px 0;color:#004587;font-weight:600;"></div>
-    <button class="btn-primary" onclick="closeSuccess()" style="margin-top:10px;">Cerrar</button>
+<div class="modal" id="successModal">
+  <div class="modal-box">
+    <div class="modal-icon">🏆</div>
+    <h2>¡Enviado!</h2>
+    <p>Tu campeón fue registrado exitosamente. ¡Mucha suerte!</p>
+    <div id="successDetail" style="background:#f0f7ff;padding:12px;border-radius:8px;margin-bottom:16px;color:#004587;font-weight:600;"></div>
+    <button class="btn-sm btn-ok" onclick="closeSuccess()">Cerrar</button>
   </div>
 </div>
 
-<!-- Modal validación -->
-<div class="summary-modal" id="validationModal">
-  <div class="summary-content" style="max-width:500px;">
-    <div style="text-align:center;font-size:3.5em;">⚠️</div>
-    <h2 style="text-align:center;color:#c9302c;">Faltan campos por completar</h2>
-    <p style="margin:12px 0;color:#555;text-align:center;">Todos los campos son obligatorios. Revisa lo siguiente:</p>
-    <div class="error-list">
-      <ul id="errorList"></ul>
-    </div>
-    <div style="text-align:center;margin-top:15px;">
-      <button class="btn-primary" onclick="closeValidation()">Entendido</button>
-    </div>
-  </div>
-</div>
-
-<div class="toast" id="toast">Guardado ✓</div>
+<div class="toast" id="toast"></div>
 
 <script>
 'use strict';
+
 const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbyLyzigTsqf8VfXW1NSfL6YSu1BrherUBrfkR5Vq2h5lx7PygFZ6khT3lPjRGdv0q8LgA/exec';
 
-// Matchups con 1 opción = equipo fijo; con 2 opciones = aún por definir
-const QF_INIT = [
-  { home: ['Francia'],             away: ['Marruecos']                    }, // CF1 – definido
-  { home: ['Noruega'],             away: ['Inglaterra']                   }, // CF2 – definido
-  { home: ['España'],  away: ['Bélgica']   }, // CF3 – por definir
-  { home: ['Argentina'], away: ['Suiza']            }, // CF4 – por definir
-];
-
-// Bracket de cruces:
-//  SF0: ganador CF0 (casa) vs ganador CF1 (fuera)  →  opciones fijas
-//  SF1: ganador CF2 (casa) vs ganador CF3 (fuera)  →  opciones dinámicas
-//  Final  casa: ganador SF0  |  Final  fuera: ganador SF1
-//  3er P. casa: perdedor SF0 |  3er P. fuera: perdedor SF1
-//  Campeón: ganador Final
-
-const formData = {};
-
-// ── Helpers de renderizado ────────────────────────────────────────────────────
-function buildSelect(id, field, options) {
-  const fixed = options.length === 1;
-  const style = fixed
-    ? 'background:#e8f0fe;font-weight:600;color:#004587;cursor:default;'
-    : '';
-  let html = `<select class="team-input" data-id="${id}" data-field="${field}" style="${style}">`;
-  if (!fixed) html += `<option value="">-- Seleccionar --</option>`;
-  options.forEach(o => html += `<option value="${o}"${fixed ? ' selected' : ''}>${o}</option>`);
-  html += `</select>`;
-  return html;
-}
-
-function makeMatchRow(prefix, idx, homeOpts, awayOpts, showWinner = true) {
-  const id = `${prefix}_${idx}`;
-  const labels = { cuartos: 'CF', semis: 'SF', final: 'F' };
-  const initWinnerOpts = (showWinner && homeOpts.length === 1 && awayOpts.length === 1)
-    ? [homeOpts[0], awayOpts[0]] : [];
-  const winnerCell = showWinner
-    ? `<td>${buildSelect(id, 'winner', initWinnerOpts)}</td>` : '';
-  return `<tr>
-    <td class="match-num">${labels[prefix]} #${idx + 1}</td>
-    <td>${buildSelect(id, 'home', homeOpts)}</td>
-    <td class="vs">VS</td>
-    <td>${buildSelect(id, 'away', awayOpts)}</td>
-    ${winnerCell}
-  </tr>`;
-}
-
-function renderTable(containerId, title, rowsHtml, showWinnerCol = true) {
-  const winnerHeader = showWinnerCol ? '<th>Ganador</th>' : '';
-  document.getElementById(containerId).innerHTML =
-    `<div class="round-card">
-      <div class="round-header">${title}</div>
-      <table>
-        <thead><tr>
-          <th style="width:80px;">Partido</th>
-          <th>Equipo Casa</th><th></th><th>Equipo Fuera</th>${winnerHeader}
-        </tr></thead>
-        <tbody>${rowsHtml}</tbody>
-      </table>
-    </div>`;
-}
-
-// ── Cascade ───────────────────────────────────────────────────────────────────
-function selVal(prefix, idx, field) {
-  const el = document.querySelector(`select[data-id="${prefix}_${idx}"][data-field="${field}"]`);
-  return el ? el.value : '';
-}
-
-function refreshSel(prefix, idx, field, options, autoSelect = false) {
-  const sel = document.querySelector(`select[data-id="${prefix}_${idx}"][data-field="${field}"]`);
-  if (!sel) return;
-  const prev = sel.value;
-  const fixed = autoSelect && options.length === 1;
-  if (fixed) {
-    sel.style.cssText = 'background:#e8f0fe;font-weight:600;color:#004587;cursor:default;width:95%;padding:6px 8px;border:1px solid #ccc;border-radius:4px;font-size:0.95em;';
-    sel.innerHTML = `<option value="${options[0]}" selected>${options[0]}</option>`;
-    formData[`${prefix}_${idx}`] = formData[`${prefix}_${idx}`] || {};
-    formData[`${prefix}_${idx}`][field] = options[0];
-  } else {
-    sel.style.cssText = '';
-    sel.innerHTML = `<option value="">-- Seleccionar --</option>` +
-      options.map(o => `<option value="${o}"${o === prev ? ' selected' : ''}>${o}</option>`).join('');
-    if (prev && !options.includes(prev)) {
-      sel.value = '';
-      if (formData[`${prefix}_${idx}`]) formData[`${prefix}_${idx}`][field] = '';
-    }
-  }
-}
-
-function updateWinnerOptions(prefix, idx) {
-  const h = selVal(prefix, idx, 'home');
-  const a = selVal(prefix, idx, 'away');
-  const opts = [h, a].filter(Boolean);
-  refreshSel(prefix, idx, 'winner', opts, false);
-}
-
-function cascadeFromWinner(prefix, idx) {
-  const winner = selVal(prefix, idx, 'winner');
-  if (prefix === 'cuartos') {
-    if (idx === 0) {
-      refreshSel('semis', 0, 'home', winner ? [winner] : ['Francia', 'Marruecos'], !!winner);
-      updateWinnerOptions('semis', 0);
-    } else if (idx === 1) {
-      refreshSel('semis', 1, 'home', winner ? [winner] : ['Noruega', 'Inglaterra'], !!winner);
-      updateWinnerOptions('semis', 1);
-    } else if (idx === 2) {
-      refreshSel('semis', 0, 'away', winner ? [winner] : [], !!winner);
-      updateWinnerOptions('semis', 0);
-    } else if (idx === 3) {
-      refreshSel('semis', 1, 'away', winner ? [winner] : [], !!winner);
-      updateWinnerOptions('semis', 1);
-    }
-  } else if (prefix === 'semis') {
-    if (idx === 0) {
-      refreshSel('final', 0, 'home', winner ? [winner] : [], !!winner);
-      cascadeChampion();
-    } else if (idx === 1) {
-      refreshSel('final', 0, 'away', winner ? [winner] : [], !!winner);
-      cascadeChampion();
-    }
-  }
-}
-
-function cascadeChampion() {
-  const h = selVal('final', 0, 'home');
-  const a = selVal('final', 0, 'away');
-  const opts = [h, a].filter(Boolean);
-  const sel = document.getElementById('campeonMundo');
-  const prev = sel.value;
-  sel.innerHTML = `<option value="">-- Seleccionar campeón --</option>` +
-    opts.map(o => `<option value="${o}"${o === prev ? ' selected' : ''}>${o}</option>`).join('');
-  if (prev && !opts.includes(prev)) sel.value = '';
-  updateProgress();
-}
-
-// ── Wiring de eventos ─────────────────────────────────────────────────────────
-function attachListeners() {
-  document.querySelectorAll('[data-id]').forEach(inp => {
-    const ev = inp.tagName === 'SELECT' ? 'change' : 'input';
-    inp.addEventListener(ev, () => {
-      const { id, field } = inp.dataset;
-      formData[id] = formData[id] || {};
-      formData[id][field] = inp.value;
-      inp.classList.remove('error');
-      updateProgress();
-      if (inp.tagName === 'SELECT') {
-        const parts = id.split('_');
-        const prefix = parts[0];
-        const idx = parseInt(parts[1]);
-        if (field === 'home' || field === 'away') {
-          updateWinnerOptions(prefix, idx);
-          if (prefix === 'final') cascadeChampion();
-        } else if (field === 'winner') {
-          cascadeFromWinner(prefix, idx);
-        }
-      }
-    });
-  });
-  ['nombre', 'email', 'apodo'].forEach(fId => {
-    const el = document.getElementById(fId);
-    if (el) el.addEventListener('input', () => { if (el.value.trim()) el.classList.remove('error'); });
-  });
-}
-
-// ── Progreso ──────────────────────────────────────────────────────────────────
-function updateProgress() {
-  let filled = 0, total = 0;
-  document.querySelectorAll('[data-id]').forEach(inp => {
-    total++;
-    if (inp.value !== '' && inp.value !== null) filled++;
-  });
-  total += 2;
-  if (document.getElementById('nombre').value.trim()) filled++;
-  if (document.getElementById('campeonMundo').value)  filled++;
-  document.getElementById('progressFill').style.width = Math.min(100, (filled / total) * 100) + '%';
-}
-
-// ── Toast ─────────────────────────────────────────────────────────────────────
-function showToast(msg) {
+function showToast(msg, duration = 2800) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
+  setTimeout(() => t.classList.remove('show'), duration);
 }
 
-// ── Recolección de datos ──────────────────────────────────────────────────────
-function gatherAll() {
-  return {
-    participante: {
-      nombre: document.getElementById('nombre').value,
-      email:  document.getElementById('email').value,
-      apodo:  document.getElementById('apodo').value
-    },
-    partidos: formData,
-    campeonMundo: document.getElementById('campeonMundo').value
-  };
-}
+function validate() {
+  const errors = [];
+  const nombre = document.getElementById('nombre').value.trim();
+  const campeon = document.getElementById('campeonMundo').value;
 
-function saveLocal() {
-  window._pollaData = gatherAll();
-  showToast('💾 Guardado en sesión');
-}
+  document.getElementById('nombre').classList.remove('error');
+  document.getElementById('campeonMundo').classList.remove('error');
 
-// ── Resumen ───────────────────────────────────────────────────────────────────
-function roundMatches(prefix, count, label) {
-  let html = `<h3>${label}</h3>`;
-  for (let i = 0; i < count; i++) {
-    const id = `${prefix}_${i}`;
-    const p = formData[id] || {};
-    const winner = prefix === 'final'
-      ? (document.getElementById('campeonMundo').value || '-')
-      : (p.winner || '-');
-    html += `<div class="summary-item">${p.home || '(sin equipo)'} <b>VS</b> ${p.away || '(sin equipo)'} — Ganador: <b>${winner}</b></div>`;
+  if (!nombre) {
+    errors.push('Nombre completo es obligatorio');
+    document.getElementById('nombre').classList.add('error');
   }
-  return html;
+  if (!campeon) {
+    errors.push('Debes seleccionar un campeón del mundo');
+    document.getElementById('campeonMundo').classList.add('error');
+  }
+
+  const errorMsg = document.getElementById('errorMsg');
+  const errorList = document.getElementById('errorList');
+  if (errors.length) {
+    errorList.innerHTML = errors.map(e => `<li>${e}</li>`).join('');
+    errorMsg.style.display = 'block';
+    return false;
+  }
+  errorMsg.style.display = 'none';
+  return true;
 }
 
-function showSummary() {
-  const data = gatherAll();
-  if (!data.participante.nombre) { showToast('⚠️ Falta tu nombre'); return; }
-  let html = `<h3>👤 Participante</h3>
-    <div class="summary-item"><b>${data.participante.nombre}</b> ${data.participante.apodo ? '("' + data.participante.apodo + '")' : ''}</div>
-    <div class="summary-item">${data.participante.email || '-'}</div>`;
-  html += roundMatches('cuartos', 4, '🥊 Cuartos de Final');
-  html += roundMatches('semis',   2, '🔥 Semifinales');
-  html += roundMatches('final',   1, '🏆 Final');
-  html += `<h3>👑 Campeón del Mundo</h3>
-    <div class="summary-item"><b>${data.campeonMundo || '-'}</b></div>`;
-  document.getElementById('summaryBody').innerHTML = html;
-  document.getElementById('summaryModal').classList.add('active');
-}
+function submitForm() {
+  if (!validate()) return;
+  const nombre  = document.getElementById('nombre').value.trim();
+  const email   = document.getElementById('email').value.trim();
+  const apodo   = document.getElementById('apodo').value.trim();
+  const campeon = document.getElementById('campeonMundo').value;
 
-function closeSummary()   { document.getElementById('summaryModal').classList.remove('active'); }
-function closeConfirm()   { document.getElementById('confirmModal').classList.remove('active'); }
-function closeSuccess()   { document.getElementById('successModal').classList.remove('active'); }
-function closeValidation(){ document.getElementById('validationModal').classList.remove('active'); }
-
-// ── Exportar Excel ────────────────────────────────────────────────────────────
-function exportSummary() {
-  const data = gatherAll();
-  if (!data.participante.nombre) { showToast('⚠️ Falta tu nombre'); return; }
-  const resumen = [
-    ['POLLA MUNDIALISTA - COPA 2026'],
-    [],
-    ['Nombre', data.participante.nombre],
-    ['Email',  data.participante.email],
-    ['Apodo',  data.participante.apodo],
-    ['Fecha',  new Date().toLocaleString()],
-    [],
-    ['CAMPEÓN DEL MUNDO', data.campeonMundo]
-  ];
-  const partidos = [['Ronda','Partido','Equipo Casa','Equipo Fuera','Ganador']];
-  const rounds = [
-    { key: 'cuartos', label: 'Cuartos de Final', count: 4 },
-    { key: 'semis',   label: 'Semifinal',         count: 2 },
-    { key: 'final',   label: 'Final',              count: 1 }
-  ];
-  rounds.forEach(r => {
-    for (let i = 0; i < r.count; i++) {
-      const id = `${r.key}_${i}`;
-      const p = data.partidos[id] || {};
-      const winner = r.key === 'final' ? data.campeonMundo : (p.winner || '');
-      partidos.push([r.label, `#${i + 1}`, p.home || '', p.away || '', winner]);
-    }
-  });
-  const wb  = XLSX.utils.book_new();
-  const ws1 = XLSX.utils.aoa_to_sheet(resumen);
-  const ws2 = XLSX.utils.aoa_to_sheet(partidos);
-  ws1['!cols'] = [{ wch: 30 }, { wch: 30 }];
-  ws2['!cols'] = [{ wch: 18 }, { wch: 10 }, { wch: 22 }, { wch: 22 }, { wch: 22 }];
-  XLSX.utils.book_append_sheet(wb, ws1, 'Resumen');
-  XLSX.utils.book_append_sheet(wb, ws2, 'Partidos');
-  XLSX.writeFile(wb, `polla_mundial_2026_${data.participante.nombre.replace(/\s+/g, '_')}.xlsx`);
-  showToast('📊 Excel descargado');
-}
-
-// ── Enviar ────────────────────────────────────────────────────────────────────
-function submitPolla() {
-  const data = gatherAll();
-  if (!data.participante.nombre) { showToast('⚠️ Falta tu nombre'); return; }
+  document.getElementById('confirmDetail').innerHTML =
+    `<div>${nombre}${apodo ? ` ("${apodo}")` : ''}</div>` +
+    `<div style="margin-top:6px;">👑 ${campeon}</div>`;
   document.getElementById('confirmModal').classList.add('active');
 }
 
+function closeConfirm()  { document.getElementById('confirmModal').classList.remove('active'); }
+function closeSuccess()  { document.getElementById('successModal').classList.remove('active'); }
+
 function doSubmit() {
   closeConfirm();
-  const data = gatherAll();
-  showToast('📤 Enviando...');
+  const nombre  = document.getElementById('nombre').value.trim();
+  const email   = document.getElementById('email').value.trim();
+  const apodo   = document.getElementById('apodo').value.trim();
+  const campeon = document.getElementById('campeonMundo').value;
+
   const payload = {
-    nombre:       data.participante.nombre,
-    email:        data.participante.email,
-    apodo:        data.participante.apodo,
-    campeonMundo: data.campeonMundo,
-    partidosJSON: JSON.stringify(data.partidos)
+    nombre:       nombre,
+    email:        email,
+    apodo:        apodo,
+    partidosJSON: campeon
   };
+
+  console.log('Payload enviado:', payload);
+
+  const btn = document.getElementById('btnSend');
+  btn.disabled = true;
+  btn.textContent = '⏳ Enviando...';
+  showToast('📤 Enviando...', 10000);
+
   fetch(GOOGLE_SHEET_URL, {
     method:  'POST',
     mode:    'no-cors',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body:    new URLSearchParams(payload).toString()
-  }).then(() => {
-    document.getElementById('successName').textContent =
-      `${data.participante.nombre}${data.participante.apodo ? ' ("' + data.participante.apodo + '")' : ''}`;
+  })
+  .then(() => {
+    document.getElementById('toast').classList.remove('show');
+    document.getElementById('successDetail').innerHTML =
+      `<div>${nombre}${apodo ? ` ("${apodo}")` : ''}</div>` +
+      `<div style="margin-top:6px;">👑 Campeón: ${campeon}</div>`;
     document.getElementById('successModal').classList.add('active');
-  }).catch(err => {
-    showToast('❌ Error al enviar');
-    console.error(err);
+    btn.disabled = false;
+    btn.textContent = '📤 Enviar campeón';
+  })
+  .catch(err => {
+    showToast('❌ Error al enviar. Intenta de nuevo.');
+    console.error('Error al enviar:', err);
+    btn.disabled = false;
+    btn.textContent = '📤 Enviar campeón';
   });
 }
 
-// ── Limpiar ───────────────────────────────────────────────────────────────────
-function resetForm() {
-  if (!confirm('¿Limpiar todo el formulario?')) return;
-  document.querySelectorAll('#nombre, #email, #apodo').forEach(i => { i.value = ''; });
-  Object.keys(formData).forEach(k => delete formData[k]);
-  initRounds();
-  document.getElementById('campeonMundo').innerHTML = '<option value="">-- Seleccionar campeón --</option>';
-  updateProgress();
-  showToast('🔄 Formulario limpio');
-}
-
-// ── Inicialización ────────────────────────────────────────────────────────────
-function initRounds() {
-  let rows = '';
-  QF_INIT.forEach((qf, i) => { rows += makeMatchRow('cuartos', i, qf.home, qf.away); });
-  renderTable('cuartos', '🥊 CUARTOS DE FINAL', rows);
-
-  rows  = makeMatchRow('semis', 0, ['Francia', 'Marruecos'], []);
-  rows += makeMatchRow('semis', 1, ['Noruega', 'Inglaterra'], []);
-  renderTable('semis', '🔥 SEMIFINALES', rows);
-
-  renderTable('final', '🏆 GRAN FINAL', makeMatchRow('final', 0, [], [], false), false);
-
-  // Pre-poblar formData para matchups con equipos fijos
-  formData['cuartos_0'] = { home: 'Francia',  away: 'Marruecos',  winner: '' };
-  formData['cuartos_1'] = { home: 'Noruega',  away: 'Inglaterra', winner: '' };
-
-  attachListeners();
-}
-
-initRounds();
-document.getElementById('campeonMundo').addEventListener('change', updateProgress);
+// Limpiar error al escribir/seleccionar
+document.getElementById('nombre').addEventListener('input', function () {
+  if (this.value.trim()) this.classList.remove('error');
+});
+document.getElementById('campeonMundo').addEventListener('change', function () {
+  if (this.value) this.classList.remove('error');
+});
 </script>
 </body>
 </html>
